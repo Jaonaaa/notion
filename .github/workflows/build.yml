@@ -1,0 +1,98 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          if [ -d "dist" ]; then
+            echo "✅ Build successful - dist directory exists"
+          else
+            echo "❌ Build failed - dist directory not found"
+            exit 1
+          fi
+
+      - name: Prepare deployment package
+        run: |
+          mkdir -p deploy
+          echo "Listing current directory content:"
+          ls -la
+           # Copy the dist folder (main build output for Vite)
+          cp -r dist deploy/ || echo "❌ dist directory not found"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-package
+          path: deploy/
+          retention-days: 1
+          if-no-files-found: error
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-package
+          path: deploy
+
+      - name: Debug SSH configuration
+        run: |
+          echo "Debugging SSH setup..."
+          echo "SSH Key length: $(echo '${{ secrets.SSH_PRIVATE_KEY_WEBCUP }}' | wc -c) characters"
+          echo "Target host: ${{ secrets.HOST_WEBCUP }}"
+          echo "Target user: ${{ secrets.USERNAME_WEBCUP }}"
+          echo "Target directory: ${{ secrets.TARGET_DIR_WEBCUP }}"
+
+      - name: Set up SSH key file
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_WEBCUP }}" > ~/.ssh/private_key
+          chmod 600 ~/.ssh/private_key
+          ssh-keyscan -H ${{ secrets.HOST_WEBCUP }} >> ~/.ssh/known_hosts || echo "Failed to scan the host keys"
+
+      - name: Add host to known_hosts manually (fallback)
+        if: failure()
+        run: |
+          echo ${{ secrets.HOST_WEBCUP }} ssh-rsa AAAAB3... >> ~/.ssh/known_hosts
+
+      - name: Deploy with tar over SSH
+        run: |
+          # Create tar archive with verbose flag
+          echo "Creating tar archive from deploy directory..."
+          ls -la deploy/
+          tar -czvf deploy.tar.gz -C deploy .
+
+          # Create directory on remote server if it doesn't exist
+          ssh -i ~/.ssh/private_key -p 22974 -o StrictHostKeyChecking=no ${{ secrets.USERNAME_WEBCUP }}@${{ secrets.HOST_WEBCUP }} "mkdir -p ${{ secrets.TARGET_DIR_WEBCUP }}"
+
+          # Copy and extract the tar file
+          cat deploy.tar.gz | ssh -i ~/.ssh/private_key -p 22974 -o StrictHostKeyChecking=no ${{ secrets.USERNAME_WEBCUP }}@${{ secrets.HOST_WEBCUP }} "cd ${{ secrets.TARGET_DIR_WEBCUP }} && tar -xzf - && echo 'Files extracted:' && ls -la"
