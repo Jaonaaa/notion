@@ -42,7 +42,7 @@ jobs:
           echo "Listing current directory content:"
           ls -la
            # Copy the dist folder (main build output for Vite)
-          cp -r dist deploy/ || echo "❌ dist directory not found"
+          cp -r dist/* deploy/ || echo "❌ dist directory not found"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
