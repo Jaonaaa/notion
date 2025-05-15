@@ -3,8 +3,8 @@ import { Hero } from "../components/hero";
 
 export function Home() {
   return (
-    <ReactLenis root>
-      <Hero />
-    </ReactLenis>
+    // <ReactLenis root>
+    <Hero />
+    // </ReactLenis>
   );
 }
