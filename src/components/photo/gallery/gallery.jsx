@@ -42,8 +42,8 @@ export function Gallery() {
       window.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("resize", handleResize);
 
-      if (stateRef.animationFrameId) {
-        cancelAnimationFrame(stateRef.animationFrameId);
+      if (stateRef.current.animationFrameId) {
+        cancelAnimationFrame(stateRef.current.animationFrameId);
       }
     };
   }, []);
@@ -364,6 +364,11 @@ export function Gallery() {
     state.startX = e.clientX;
     state.startY = e.clientY;
     containerRef.current.style.cursor = "grabbing";
+
+    gsap.to(".gallery-canvas-container", {
+      scale: 0.9,
+      duration: 0.3,
+    });
   };
 
   const handleMouseMove = (e) => {
@@ -400,6 +405,10 @@ export function Gallery() {
 
     if (state.canDrag) {
       containerRef.current.style.cursor = "grab";
+      gsap.to(".gallery-canvas-container", {
+        scale: 1,
+        duration: 0.3,
+      });
 
       if (Math.abs(state.dragVelocityX) > 0.1 || Math.abs(state.dragVelocityY) > 0.1) {
         const momentumFactor = 200;
@@ -489,7 +498,9 @@ export function Gallery() {
   return (
     <>
       <div className="gallery-container" ref={containerRef}>
-        <div className="canvas" id="canvas" ref={canvasRef}></div>
+        <div className="gallery-canvas-container">
+          <div className="canvas" id="canvas" ref={canvasRef}></div>
+        </div>
         <div className="overlay" id="overlay" ref={overlayRef}></div>
       </div>
 
