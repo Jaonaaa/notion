@@ -42,6 +42,9 @@ export default class App {
 
     this.gl = this.renderer.gl;
 
+    const canvases = document.querySelectorAll("canvas");
+    canvases.forEach((canvas) => canvas.remove());
+
     document.body.appendChild(this.gl.canvas);
   }
 

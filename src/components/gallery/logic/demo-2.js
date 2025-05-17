@@ -6,6 +6,7 @@ import { lerp } from "./utils/math";
 import fragment from "./demo-2/post.glsl";
 import Media from "./demo-2/Media";
 
+const vitesse = 100;
 export default class App {
   constructor() {
     this.scroll = {
@@ -43,6 +44,9 @@ export default class App {
     });
 
     this.gl = this.renderer.gl;
+
+    const canvases = document.querySelectorAll("canvas");
+    canvases.forEach((canvas) => canvas.remove());
 
     document.body.appendChild(this.gl.canvas);
   }

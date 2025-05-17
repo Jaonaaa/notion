@@ -15,10 +15,11 @@ export function App() {
       <MenuContextProvider>
         <Navigation />
         <Routes>
-          <Route path="/" element={<Story />} />
+          <Route path="/" element={<Gallery />} />
+          <Route path="/story" element={<Story />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery-history" element={<GalleryCanvas images={imagesDefaultGallery} />} />
+          <Route path="/gallery-history/frames/:id" element={<GalleryCanvas images={imagesDefaultGallery} />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>

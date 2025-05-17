@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/demos/demo-2.scss";
+import "../styles/demos/demo-1.scss";
 
 const GalleryY = () => {
   return (
-    <div data-id="1">
+    <div data-id="0">
       <main>
         <div className="frame">
           <div className="frame__title-wrap">
@@ -20,26 +20,17 @@ const GalleryY = () => {
               GitHub
             </a>
           </div>
-
-          <div className="frame__demos">
-            <a href="index.html" className="frame__demo">
-              Demo 1
-            </a>
-            <a href="index2.html" className="frame__demo frame__demo--current">
-              Demo 2
-            </a>
-          </div>
         </div>
 
-        <div className="demo-2">
-          <div className="demo-2__header">
-            <h1 className="demo-2__title">Aaa lessy e</h1>
-          </div>
+        <div className="demo-1">
+          {/* <div className="demo-1__header">
+            <h1 className="demo-1__title">Planete Elevene</h1>
+          </div> */}
 
-          <div className="demo-2__gallery">
-            {[...Array(7)].map((_, i) => (
-              <figure className="demo-2__gallery__figure" key={i}>
-                <img className="demo-2__gallery__image" src={`images/demo-2/${i + 1}.jpg`} alt={`Gallery item ${i + 1}`} />
+          <div className="demo-1__gallery">
+            {[...Array(12)].map((_, i) => (
+              <figure className="demo-1__gallery__figure" key={i}>
+                <img className="demo-1__gallery__image" src={`images/demo-1/${i + 1}.jpg`} alt={`Gallery item ${i + 1}`} />
               </figure>
             ))}
           </div>
