@@ -9,6 +9,7 @@ const ListMemory = ({ toogleModal, showModal }) => {
   const [hideList, setHideList] = useState(true);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
   const [memories, setMemories] = useState([
     {
@@ -55,9 +56,9 @@ const ListMemory = ({ toogleModal, showModal }) => {
     if (musicFile) {
       const payload = {
         titre: title,
-        date: new Date().toISOString().split("T")[0],
         contenu: description,
         audio: musicFile,
+        date: date,
         image: memories[0]?.image || null,
         elements: memories.map((memory) => ({
           titre: memory.title || "Sans titre",
@@ -113,7 +114,7 @@ const ListMemory = ({ toogleModal, showModal }) => {
               <input
                 type="date"
                 name="date"
-                onChange={(e) => console.log(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
                 className="w-full text-2xl border-b border-gray-100 outline-0 text-white p-4 py-3 bg-transparent"
               />
             </div>
