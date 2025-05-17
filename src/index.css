@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+canvas {
+  display: block;
+}
+
+#imageContainer {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#imageContainer > * {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}

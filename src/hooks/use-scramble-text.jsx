@@ -17,7 +17,10 @@ import { random } from "../helpers/random";
 export function useScrambleText({
   target,
   viewOptions,
-  splitOptions,
+  splitOptions = {
+    lineClass: "tracking-tight pb-2.5 -mb-2.5 overflow-hidden",
+    charClass: "relative",
+  },
   delayRange = [200, 1200],
   durationRange = [400, 800],
 }) {
