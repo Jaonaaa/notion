@@ -5,6 +5,8 @@ import { AddFunStory } from "./page/add-fun-story";
 import { imagesDefaultGallery } from "./components/history-gallery";
 import { lazy } from "react";
 import AddSimpleMemory from "./components/stories/add-simple-memory";
+import Specialist from "./components/specialist";
+import LoginPage from "./components/sign-in";
 
 const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -22,6 +24,8 @@ export function App() {
           <Route path="/gallery-history" element={<GalleryCanvas images={imagesDefaultGallery} />} />
           <Route path="/gallery-history/frames/:id" element={<GalleryCanvas images={imagesDefaultGallery} />} />
           <Route path="/add-simple-story" element={<AddSimpleMemory />} />
+          <Route path="/specialist" element={<Specialist />} />
+          <Route path="/sign-in" element={<LoginPage />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>

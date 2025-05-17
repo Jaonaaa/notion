@@ -63,7 +63,7 @@ const Memory = ({ image, description, id, selected, add, update, length, maxFile
               className="bg-white inline-flex gap-1 items-center p-5 px-6 hover:scale-95 transition-all duration-200 cursor-pointer rounded-full z-2 text-gray-800"
               onClick={add}
             >
-              <span className="font-semibold"> Ajouter un souvenir </span>
+              <span className="font-semibold"> Ajouter un moment </span>
               <PlusIcon color="black" size={22} />
             </button>
           ) : null}

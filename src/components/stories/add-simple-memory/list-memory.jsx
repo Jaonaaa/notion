@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import "./index.sass";
 import Memory from "./memory";
 import ModalSong from "./modal-song";
-import { addMemories } from "../../../queries/add-simple-memory";
+import { addMemories, getMemories } from "../../../queries/add-simple-memory";
 
 const ListMemory = ({ toogleModal, showModal }) => {
   const [hideList, setHideList] = useState(true);
@@ -31,8 +31,8 @@ const ListMemory = ({ toogleModal, showModal }) => {
   };
 
   const isFormValid = useMemo(() => {
-    return title.trim() !== "" && description.trim() !== "";
-  }, [title, description]);
+    return title.trim() !== "" && description.trim() !== "" && date;
+  }, [title, description, date]);
 
   const addNewMemory = () => {
     setSwitched(true);
@@ -53,15 +53,16 @@ const ListMemory = ({ toogleModal, showModal }) => {
   };
 
   const send = async () => {
+    // getMemories();
     if (musicFile) {
       const payload = {
         titre: title,
         contenu: description,
         audio: musicFile,
+        idemotion: 1,
         date: date,
         image: memories[0]?.image || null,
         elements: memories.map((memory) => ({
-          titre: memory.title || "Sans titre",
           description: memory.description,
           media: memory.image,
         })),
@@ -89,35 +90,35 @@ const ListMemory = ({ toogleModal, showModal }) => {
             className="w-full h-full object-cover select-none"
           />
         </div>
-        <div className="w-[36rem] flex flex-col gap-[3rem]">
-          <div className="w-full">
+        <div className="w-[40rem] flex flex-col gap-[3rem]">
+          <div className="w-full flex gap-3">
             <input
               type="text"
               name="title"
+              style={{ colorScheme: "dark" }}
               placeholder="Le titre de ton histoire..."
               onChange={(e) => setTitle(e.target.value)}
               className=" w-full text-2xl border-b border-gray-100 outline-0 text-white p-4 py-3"
             />
+            <input
+              type="date"
+              name="date"
+              style={{ colorScheme: "dark" }}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full color-scheme-dark text-2xl border-b  border-gray-100 outline-0 text-white p-4 py-3 bg-transparent"
+            />
           </div>
+
           <div className="w-full">
             <textarea
               name="description"
               type="text"
               rows={7}
+              style={{ colorScheme: "dark" }}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Parle nous de ton histoire..."
               className=" w-full text-2xl border-b border-gray-100 outline-0 text-white px-4 py-3"
             />
-          </div>
-          <div className="w-full">
-            <div className="w-full">
-              <input
-                type="date"
-                name="date"
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full text-2xl border-b border-gray-100 outline-0 text-white p-4 py-3 bg-transparent"
-              />
-            </div>
           </div>
         </div>
         <button

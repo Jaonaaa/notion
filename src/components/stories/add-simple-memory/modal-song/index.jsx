@@ -66,7 +66,7 @@ const ModalSong = ({ toogleModal, setMusic, send }) => {
           <div id="webcrumbs">
             <div className="w-[480px] p-6 rounded-xl bg-gradient-to-br bg-[#363636] shadow-lg">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-100 mb-2">Ajoutez une musique à votre souvenir</h2>
+                <h2 className="text-2xl font-bold text-gray-100 mb-2">Ajoutez une musique à votre moment</h2>
                 <p className="text-gray-300">Partagez votre talent avec le monde</p>
               </div>
 
