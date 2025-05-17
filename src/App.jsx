@@ -3,7 +3,11 @@ import { Home } from "./page/home";
 import { Story } from "./page/story";
 import { Navigation } from "./components/navigation/navigation";
 import { MenuContextProvider } from "./contexts/menu-context";
-import Gallery from "./components/gallery";
+import { imagesDefaultGallery } from "./components/history-gallery";
+import { lazy } from "react";
+
+const Gallery = lazy(() => import("./components/gallery"));
+const GalleryCanvas = lazy(() => import("./components/history-gallery"));
 
 export function App() {
   return (
@@ -14,6 +18,7 @@ export function App() {
           <Route path="/" element={<Story />} />
           <Route path="/home" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery-history" element={<GalleryCanvas images={imagesDefaultGallery} />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>

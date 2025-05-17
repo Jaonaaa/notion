@@ -1,5 +1,4 @@
-// App.jsx or DemoLoader.jsx
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import One from "./demo-1";
 import Two from "./demo-2";
 
