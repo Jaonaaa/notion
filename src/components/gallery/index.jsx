@@ -19,6 +19,7 @@ function Gallery() {
           border: "1px solid black",
           padding: "5px",
           color: "black",
+          opacity: 0,
         }}
         onClick={() => {
           setDemoId((prev) => (prev === 0 ? 1 : 0));

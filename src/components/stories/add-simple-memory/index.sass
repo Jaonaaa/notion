@@ -1,0 +1,44 @@
+.slide-down-hide
+    opacity: 1
+    transform: translateY(0)
+    animation: slideDownHide 0.5s forwards
+
+.slide-up-show
+    opacity: 0
+    transform: translateY(-15%)
+    animation: slideUpShow 0.5s forwards
+    animation-delay: 350ms
+
+.show-modal
+    opacity: 1 !important
+    transform: translateY(0) !important
+    transition: all 0.3s ease-in-out
+
+.hide-modal
+    opacity: 0 !important
+    transition: all 0.3s ease-in-out
+
+.hide-item
+    opacity: 0 !important
+    transition: all 0.3s ease-in-out
+    pointer-events: none
+
+.show-item
+    opacity: 1 !important
+    transition: all 0.3s ease-in-out
+
+@keyframes slideDownHide
+    0%
+        transform: translateY(0)
+        opacity: 1
+    100%
+        transform: translateY(15%) scale(0.8)
+        opacity: 0
+
+@keyframes slideUpShow
+    0%
+        transform: translateY(-15%)
+        opacity: 0
+    100%
+        transform: translateY(0)
+        opacity: 1
