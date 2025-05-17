@@ -19,7 +19,7 @@
     width: 100vw;
     height: 100vh;
     object-fit: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.4) saturate(60%);
   }
 
   p {

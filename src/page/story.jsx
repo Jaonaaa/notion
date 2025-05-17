@@ -70,7 +70,7 @@ export function Story() {
         y: "-100%",
         duration: 0.2,
         stagger: 0.02,
-        ease: "power1.in",
+        ease: "power3.in",
         onComplete: () => {
           gsap.set(`#description-${currentParagraph} .${styles.description}`, { y: "100%" });
           gsap.to(`#description-${currentParagraph - 1} .${styles.description}`, {
