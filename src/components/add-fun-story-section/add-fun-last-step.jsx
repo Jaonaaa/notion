@@ -7,10 +7,39 @@ export function AddFormLastStep({ values, formValues }) {
   const [sound, setSound] = useState("");
 
   const handleSubmit = () => {
-    console.log({
-      values,
-      sound,
-      formValues,
+    const filteredElements = values.filter(({ image }) => image != "");
+
+    const formatDate = () => {
+      const ddmmyyyy = formValues.date.replace(".", "-").replace(".", "-");
+      const [day, month, year] = ddmmyyyy.split("-");
+      return `${year}-${month}-${day}`;
+    };
+
+    const data = {
+      titre: formValues.title,
+      date: formatDate(),
+      contenu: formValues.description,
+      idemotion: 1,
+      audio: sound,
+      image: filteredElements[0].image,
+      elements: filteredElements.map((value) => ({
+        messagecontent: value.text,
+        media: value.image,
+        emoticone: value.emoji,
+        forme: value.disposition,
+      })),
+      mode: "fun",
+    };
+
+    console.log(data);
+    fetch("http://172.20.10.4:4000/api/story", {
+      method: "POST",
+      headers: {
+        Authorization:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJMb2dpbiI6ImxpbnRzQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTEzNDU4LCJleHAiOjE3NDc1MzE0NTh9.i9jBeK0iR-whHcHioVl1i6J41Q4OyGAd5NBi4sAz1ng",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
   };
 

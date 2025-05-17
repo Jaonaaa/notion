@@ -4,6 +4,8 @@ import { MenuContextProvider } from "./contexts/menu-context";
 import { AddFunStory } from "./page/add-fun-story";
 import { imagesDefaultGallery } from "./components/history-gallery";
 import { lazy } from "react";
+import { Profile } from "./page/profile";
+import { FunStoryPage } from "./page/fun-story-page";
 
 const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -17,6 +19,8 @@ export function App() {
           {/* <Route path="/" element={<Story />} /> */}
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/add-fun-story" element={<AddFunStory />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/fun-story/:id" element={<FunStoryPage />} />
           {/* <Route path="/" element={<Gallery />} />
           <Route path="/story" element={<Story />} />
           <Route path="/home" element={<Home />} />

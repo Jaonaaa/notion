@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { AddFunInitialForm } from "../components/add-fun-story-section/add-fun-initial-form";
 import { AddFunStorySection } from "../components/add-fun-story-section/add-fun-story-section";
 import { AddFormLastStep } from "../components/add-fun-story-section/add-fun-last-step";
+import gsap from "gsap";
 
 const gradients = [
-  "from-red-100 to-green-100",
-  "from-pink-100 to-gray-100",
-  "from-yellow-100 to-blue-100",
-  "from-gray-100 to-rose-100",
-  "from-pink-100 to-violet-100",
-  "from-red-100 to-blue-100",
-  "from-indigo-100 to-blue-100",
-  "from-green-100 to-red-100",
+  "linear-gradient(to bottom, #fee2e2, #d1fae5)", // from-red-100 to-green-100
+  "linear-gradient(to bottom, #fce7f3, #f3f4f6)", // from-pink-100 to-gray-100
+  "linear-gradient(to bottom, #fef3c7, #dbeafe)", // from-yellow-100 to-blue-100
+  "linear-gradient(to bottom, #f3f4f6, #ffe4e6)", // from-gray-100 to-rose-100
+  "linear-gradient(to bottom, #fce7f3, #ede9fe)", // from-pink-100 to-violet-100
+  "linear-gradient(to bottom, #fee2e2, #dbeafe)", // from-red-100 to-blue-100
+  "linear-gradient(to bottom, #e0e7ff, #dbeafe)", // from-indigo-100 to-blue-100
+  "linear-gradient(to bottom, #d1fae5, #fee2e2)", // from-green-100 to-red-100
 ];
 
 export function AddFunStory() {
@@ -25,49 +26,49 @@ export function AddFunStory() {
   });
   const [values, setValues] = useState([
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
     },
     {
-      text: "Set a descirption",
+      text: "Ajouter une description",
       image: "",
       disposition: "square",
       emoji: "/emojies/1.png",
@@ -75,24 +76,11 @@ export function AddFunStory() {
   ]);
 
   useEffect(() => {
-    if (document.getElementById("add-fun-container")) {
-      document.getElementById(
-        "add-fun-container"
-      ).className = `duration-500 bg-gradient-to-b ${gradients[index]}`;
-    }
+    gsap.to("#add-fun-container", { backgroundImage: gradients[index], duration: 0.4 });
   }, [index]);
 
   return (
-    <div id="add-fun-container" className="duration-500 bg-gradient-to-b from-green-100 to-red-100">
-      {/* Tailwind gradients, do not remove. if you remove, you are gay! */}
-      <div className="hidden bg-gradient-to-b from-red-100 to-green-100"></div>
-      <div className="hidden bg-gradient-to-b from-pink-100 to-gray-100"></div>
-      <div className="hidden bg-gradient-to-b from-yellow-100 to-blue-100"></div>
-      <div className="hidden bg-gradient-to-b from-gray-100 to-rose-100"></div>
-      <div className="hidden bg-gradient-to-b from-pink-100 to-violet-100"></div>
-      <div className="hidden bg-gradient-to-b from-red-100 to-blue-100"></div>
-      <div className="hidden bg-gradient-to-b from-indigo-100 to-blue-100"></div>
-      <div className="hidden bg-gradient-to-b from-green-100 to-red-100"></div>
+    <div id="add-fun-container" className="duration-500" style={{ backgroundImage: gradients[0] }}>
       {step === 0 && (
         <AddFunInitialForm
           formValues={formValues}
