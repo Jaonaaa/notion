@@ -1,9 +1,16 @@
 import { Image } from "lucide-react";
 import { toBase64 } from "../../helpers/file-helper";
 
-export function CircleShape({ text, toggleTextInput, image, setImage }) {
+export function CircleShape({
+  text,
+  toggleTextInput,
+  image,
+  setImage,
+  emoji,
+  toggleEmojiSelection,
+}) {
   return (
-    <div className="relative h-screen w-screen flex items-center justify-center bg-gradient-to-b from-gray-200 to-red-100">
+    <div className="relative h-screen w-screen flex items-center justify-center">
       <div id="content-container" style={{ aspectRatio: "1" }} className="w-96 relative">
         <div
           id="image-container"
@@ -46,12 +53,10 @@ export function CircleShape({ text, toggleTextInput, image, setImage }) {
         <div
           id="emoji-container"
           style={{ scale: 0 }}
-          className="absolute w-24 h-24 top-4 -right-0 p-3 px-3.5 bg-white rounded-full"
+          className="absolute w-24 h-24 top-4 -right-0 p-3 px-3.5 bg-white rounded-full cursor-pointer"
+          onClick={toggleEmojiSelection}
         >
-          <img
-            className="h-full w-full"
-            src="https://cdn.prod.website-files.com/667ad2c31e593132fcd80f3d/667ad2c31e593132fcd80f70_icon-3d-fire-p-500.png"
-          />
+          <img className="h-full w-full" src={emoji} />
         </div>
       </div>
     </div>
