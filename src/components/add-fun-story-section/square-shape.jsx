@@ -1,9 +1,16 @@
 import { Image } from "lucide-react";
 import { toBase64 } from "../../helpers/file-helper";
 
-export function SquareShape({ text, toggleTextInput, image, setImage }) {
+export function SquareShape({
+  text,
+  toggleTextInput,
+  image,
+  setImage,
+  emoji,
+  toggleEmojiSelection,
+}) {
   return (
-    <div className="relative h-screen w-screen flex items-center justify-center bg-gradient-to-b from-gray-200 to-red-100">
+    <div className="relative h-screen w-screen flex items-center justify-center">
       <div id="content-container" style={{ aspectRatio: "1" }} className="w-96 relative">
         <div
           id="image-container"
@@ -47,12 +54,9 @@ export function SquareShape({ text, toggleTextInput, image, setImage }) {
           id="emoji-container"
           style={{ scale: 0 }}
           className="absolute w-48 h-48 -top-20 -right-16 p-3 px-3.5 cursor-pointer"
+          onClick={toggleEmojiSelection}
         >
-          <img
-            className="h-full w-full"
-            src="https://cdn.prod.website-files.com/667ad2c31e593132fcd80f3d/667ad2c31e593132fcd80f70_icon-3d-fire-p-500.png"
-            onClick={() => {}}
-          />
+          <img className="h-full w-full" src={emoji} />
         </div>
       </div>
     </div>

@@ -15,9 +15,9 @@ export function App() {
         {/* <Navigation /> */}
         <Routes>
           {/* <Route path="/" element={<Story />} /> */}
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/add-fun-story" element={<AddFunStory />} />
-          <Route path="/" element={<Gallery />} />
+          {/* <Route path="/" element={<Gallery />} />
           <Route path="/story" element={<Story />} />
           <Route path="/home" element={<Home />} />
           <Route
@@ -27,7 +27,7 @@ export function App() {
           <Route
             path="/gallery-history/frames/:id"
             element={<GalleryCanvas images={imagesDefaultGallery} />}
-          />
+          /> */}
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>
