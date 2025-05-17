@@ -6,6 +6,9 @@ import { imagesDefaultGallery } from "./components/history-gallery";
 import { lazy } from "react";
 import { Profile } from "./page/profile";
 import { FunStoryPage } from "./page/fun-story-page";
+import AddSimpleMemory from "./components/stories/add-simple-memory";
+import Specialist from "./components/specialist";
+import LoginPage from "./components/sign-in";
 
 const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -17,12 +20,12 @@ export function App() {
         {/* <Navigation /> */}
         <Routes>
           {/* <Route path="/" element={<Story />} /> */}
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Gallery />} />
           <Route path="/add-fun-story" element={<AddFunStory />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/fun-story/:id" element={<FunStoryPage />} />
-          {/* <Route path="/" element={<Gallery />} />
-          <Route path="/story" element={<Story />} />
+          <Route path="/" element={<Gallery />} />
+          {/* <Route path="/story" element={<Story />} /> */}
           <Route path="/home" element={<Home />} />
           <Route
             path="/gallery-history"
@@ -31,7 +34,10 @@ export function App() {
           <Route
             path="/gallery-history/frames/:id"
             element={<GalleryCanvas images={imagesDefaultGallery} />}
-          /> */}
+          />
+          <Route path="/add-simple-story" element={<AddSimpleMemory />} />
+          <Route path="/specialist" element={<Specialist />} />
+          <Route path="/sign-in" element={<LoginPage />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>

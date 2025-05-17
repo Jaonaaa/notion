@@ -23,28 +23,45 @@ export const imagesDefaultGallery = [
 export const GalleryCanvas = ({ images }) => {
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    // const loadImages = async () => {
-    //   const promises = images.map(({ url }) => {
-    //     return new Promise((resolve, reject) => {
-    //       const img = new Image();
-    //       img.src = url;
-    //       img.onload = resolve;
-    //       img.onerror = reject;
-    //     });
-    //   });
-    //   await Promise.all(promises);
-    //   setLoaded(true);
-    // };
-    // loadImages();
-  }, [images]);
+  console.log(images);
 
-  if (loaded) {
-    return <div style={{ color: "red" }}>Loading...</div>;
-  }
+  useEffect(() => {
+    const loadImages = async () => {
+      const promises = images.map(({ url }) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = url;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
+
+      console.log("Waiting for images to load...");
+      for (const promise of promises) {
+        await promise;
+      }
+      console.log("All images loaded");
+      setLoaded(true);
+    };
+    loadImages();
+  }, [images]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
+      {!loaded ? (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            zIndex: 10,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+          }}
+          className=" bg-gradient-to-b from-[#eee5a0] to-[#dfedec] "
+        ></div>
+      ) : null}
+
       <Canvas dpr={[1, 1.5]} camera={{ fov: 70, position: [0, 5, 25] }}>
         <color attach="background" args={["#191920"]} />
         <fog attach="fog" args={["#191920", 0, 15]} />
