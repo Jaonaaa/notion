@@ -14,7 +14,7 @@ canvas {
   align-items: center;
 }
 
-#imageContainer > * {
+#imageContainer>* {
   position: absolute;
   inset: 0;
   width: 100% !important;
