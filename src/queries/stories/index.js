@@ -1,6 +1,25 @@
 import { base_url } from "..";
 import { getToken } from "../../helpers/token";
 
+export async function getGallery() {
+  try {
+    const response = await fetch(base_url + `api/story/gallery`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getToken(),
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching story with id ${id}: ${response.statusText}`);
+    }
+    const story = await response.json();
+    return story;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getStoryById(id) {
   try {
     const response = await fetch(base_url + `api/story/${id}`, {

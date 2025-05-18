@@ -5,7 +5,7 @@ import { CustomEase } from "gsap/dist/CustomEase";
 
 import "./gallery.scss";
 import { FullScreenModal } from "../../full-screen-modal";
-import { getAllStories } from "../../../queries/stories";
+import { getAllStories, getGallery } from "../../../queries/stories";
 import { base_url } from "../../../queries";
 
 let SplitType;
@@ -534,7 +534,7 @@ export function GalleryPage() {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    getAllStories().then((response) => {
+    getGallery().then((response) => {
       setStories(response);
     });
   }, []);

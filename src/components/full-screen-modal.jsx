@@ -93,7 +93,7 @@ export function FullScreenModal({ story, onHide = () => {} }) {
               >
                 Voter
               </button>
-              ({formatNumber(votes)})
+              <button className="opacity-0">({formatNumber(votes)})</button>
               <button
                 onClick={() => {
                   navigate(`/story/add-comment/${story.id}`);
