@@ -7,6 +7,8 @@ import ToolBar from "./toolbar";
 import { addComment } from "../../queries/comment";
 
 const ImagePreview = ({ imageUrl, onAddDrawing, idStory = 1 }) => {
+  console.log(imageUrl);
+
   const [fabricCanvas, setFabricCanvas] = useState(null);
   const [activeColor, setActiveColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(3);

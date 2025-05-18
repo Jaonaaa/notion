@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import signIn from "../../queries/sign/sign-in";
+import signIn, { singUp } from "../../queries/sign/sign-in";
 import "./index.sass";
 import { Link, useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const SignupPage = () => {
+  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      let res = await signIn(email, password);
+      let res = await singUp(fullname, email, password);
       if (res.error) {
         setError("Erreur lors de la connexion. Veuillez réessayer.");
       } else {
@@ -51,10 +52,24 @@ const LoginPage = () => {
 
           <div className="flex-grow flex flex-col justify-center max-w-md mx-auto w-full">
             <h2 className="text-xl font-semibold mb-7 animate-fade-in-up stagger-delay-100">
-              Connexion
+              Inscription
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-6 w-full">
+              <div className="space-y-2 animate-fade-in-up stagger-delay-200">
+                <label htmlFor="fullname" className="uppercase text-xs font-medium text-gray-500">
+                  Nom complet
+                </label>
+                <input
+                  type="text"
+                  id="fullname"
+                  value={fullname}
+                  onChange={(e) => setFullname(e.target.value)}
+                  className="w-full px-3 py-2 text-sm bg-gray-200 border-0 rounded-sm focus:outline-none focus:ring-1"
+                  style={{ focusRingColor: "#1a1a1a" }}
+                  required
+                />
+              </div>
               <div className="space-y-2 animate-fade-in-up stagger-delay-200">
                 <label htmlFor="email" className="uppercase text-xs font-medium text-gray-500">
                   Email
@@ -105,7 +120,7 @@ const LoginPage = () => {
                 className="w-full py-3 text-white hover:scale-95 transition-all duration-200 text-sm rounded-sm hover:bg-opacity-90 cursor-pointer animate-fade-in-up stagger-delay-400"
                 style={{ backgroundColor: "#1a1a1a" }}
               >
-                Se connecter
+                S'inscrire
               </button>
               <div className="flex mt-2">
                 {error && (
@@ -120,11 +135,11 @@ const LoginPage = () => {
           <div className="mt-auto pt-8 text-left text-lg text-gray-500 animate-fade-in">
             <span
               onClick={() => {
-                navigate("/sign-up");
+                navigate("/sign-in");
               }}
               className="cursor-pointer"
             >
-              Créer un compte
+              Se connecter
             </span>
           </div>
         </div>
@@ -148,4 +163,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

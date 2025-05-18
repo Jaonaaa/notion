@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
+
+* {
+  font-family: "SF Pro Display", sans-serif;
+}
 
 @font-face {
   font-family: Little Bubble;

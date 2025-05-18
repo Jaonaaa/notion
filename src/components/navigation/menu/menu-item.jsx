@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMenuContext } from "../../../contexts/menu-context";
+import { getToken } from "../../../helpers/token";
 
 export function MenuItem({ label = "", to = "", ...props }) {
   const { toggleOpen } = useMenuContext();
@@ -52,6 +53,12 @@ export function MenuItem({ label = "", to = "", ...props }) {
       });
     }
   };
+
+  if (getToken() && to == "/sign-in") {
+    return null;
+  } else if (!getToken() && to == "/profile") {
+    return null;
+  }
 
   return (
     <a href={to} onClick={handleClick} className="overflow-hidden w-fit">

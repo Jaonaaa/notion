@@ -46,7 +46,7 @@ export function CircleShape({
           className="absolute max-w-48 w-fit bottom-8 -left-4 p-3 px-3.5 bg-white rounded-2xl text-sm cursor-pointer shadow-xl"
           onClick={toggleTextInput}
         >
-          <p className="opacity-50">A little Description</p>
+          <p className="opacity-50">Ajouter une petite description</p>
           <p className="mt-1.5 leading-[1.25]">{text}</p>
         </div>
 

@@ -15,4 +15,8 @@ export const menuItems = [
     label: "Se connecter",
     to: "/sign-in",
   },
+  {
+    label: "Profil",
+    to: "/profile",
+  },
 ];

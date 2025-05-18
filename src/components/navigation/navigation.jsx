@@ -11,7 +11,7 @@ export function Navigation() {
   return (
     <>
       <div className="z-10 fixed top-0 left-0 w-screen p-8 py-4 flex justify-between items-center">
-        <span className="text-xl font-medium tracking-tight">Motion</span>
+        <span className="text-xl font-medium tracking-tight">The end page</span>
         <div className="flex items-center gap-4">
           <span className="cursor-pointer" onClick={toggleOpen}>
             Menu

@@ -43,10 +43,11 @@ export function FunStoryPage() {
   const { id } = useParams();
   const [elements, setElements] = useState([]);
   const [audio, setAudio] = useState("");
+  const audioRef = useRef();
 
   useState(() => {
     getStoryById(id).then((response) => {
-      setAudio(response.audio);
+      setAudio(base_url + response.audio);
       setElements(
         response.StoryElements.map((value, index) => {
           let defaultPosition = "";
@@ -84,9 +85,22 @@ export function FunStoryPage() {
         <FunStoryItem key={index} {...item} />
       ))}
       {audio != "" && (
-        <audio className="hidden" autoPlay loop>
-          <source src={`${base_url}${audio}`} type="audio/mpeg" />
-        </audio>
+        <audio
+          ref={audioRef}
+          onLoad={() => {
+            audioRef.current.play();
+          }}
+          onPlay={() => {
+            setIsPlaying(true);
+          }}
+          onPause={() => {
+            setIsPlaying(false);
+          }}
+          autoPlay
+          src={audio}
+          style={{ display: "none" }}
+          loop
+        />
       )}
     </div>
   );
