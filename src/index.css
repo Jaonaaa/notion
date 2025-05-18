@@ -49,3 +49,19 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.5s ease-out both;
 }
+
+.color-picker-item {
+  @apply w-6 h-6 rounded-full cursor-pointer border border-gray-300 transition-transform hover:scale-110;
+}
+
+.tool-button {
+  @apply flex items-center justify-center p-2 rounded-md transition-all hover:bg-gray-100;
+}
+
+.tool-button.active {
+  @apply bg-gray-200 shadow-inner;
+}
+
+.drawing-canvas {
+  @apply border border-gray-200 rounded-lg shadow-md bg-white touch-none;
+}

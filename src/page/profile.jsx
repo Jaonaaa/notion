@@ -12,6 +12,7 @@ import { AddStoryChoseModal } from "../components/add-story-chose-modal";
 import fetchUserData from "../queries/profile";
 import { base_url } from "../queries";
 import { getUserName } from "../helpers/token";
+import ImagePreview from "../components/comment/image-preview";
 
 export function Profile() {
   const containerRef = useRef(null);
