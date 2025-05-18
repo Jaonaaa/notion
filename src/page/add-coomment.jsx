@@ -14,7 +14,7 @@ export function AddComment() {
         setImage(`${base_url}${response.image_comment}`);
       }
     });
-  }, []);
+  }, [id]);
 
   return <ImagePreview imageUrl={image} idStory={id} />;
 }

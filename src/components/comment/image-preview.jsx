@@ -16,7 +16,7 @@ const ImagePreview = ({ imageUrl, onAddDrawing, idStory = 1 }) => {
   const initCanvas = useCallback(
     (canvas) => {
       if (!canvas || fabricCanvas) return;
-      console.log("SSSS");
+      console.log("Canvasss", canvas ? "Loaded" : "No canvas");
 
       const newCanvas = new fabric.Canvas(canvas, {
         isDrawingMode: true,

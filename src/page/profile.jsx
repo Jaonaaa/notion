@@ -22,7 +22,7 @@ export function Profile() {
 
   const [storyForModal, setStoryForModal] = useState(null);
   const [profileLayout, setProfileLayout] = useState([]);
-
+  const [countStory, setCountStory] = useState(0);
   useScrambleText({ target: titleRef });
 
   const productDistribution = [
@@ -40,7 +40,7 @@ export function Profile() {
 
   const getUserData = async () => {
     const res = await fetchUserData();
-    console.log(res);
+    setCountStory(res.length);
     setProfileData(res);
   };
 
@@ -123,6 +123,7 @@ export function Profile() {
           </button>
         </div>
         <div className="products">
+          {countStory === 0 && <div className="text-center mt-4 text-3xl font-light">Aucune histoire trouvée</div>}
           {profileLayout.map((row, rowIndex) => (
             <div className="row" key={`row-${rowIndex}`}>
               {row.map((column, colIndex) => (
@@ -142,11 +143,7 @@ export function Profile() {
                     >
                       <div className="product-card">
                         <div className="product-card-image">
-                          <img
-                            src={`${base_url}${product.image}`}
-                            alt={product.name}
-                            className="product-card-img"
-                          />
+                          <img src={`${base_url}${product.image}`} alt={product.name} className="product-card-img" />
                         </div>
                         <div className="product-info">
                           <p className="uppercase -mt-1 font-medium text-sm">{product.titre}</p>
