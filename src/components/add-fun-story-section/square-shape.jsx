@@ -1,26 +1,12 @@
 import { Image } from "lucide-react";
 import { toBase64 } from "../../helpers/file-helper";
 
-export function SquareShape({
-  text,
-  toggleTextInput,
-  image,
-  setImage,
-  emoji,
-  toggleEmojiSelection,
-}) {
+export function SquareShape({ text, toggleTextInput, image, setImage, emoji, toggleEmojiSelection }) {
   return (
     <div className="relative h-screen w-screen flex items-center justify-center">
       <div id="content-container" style={{ aspectRatio: "1" }} className="w-96 relative">
-        <div
-          id="image-container"
-          style={{ scale: 0 }}
-          className="h-full w-full rounded-4xl overflow-hidden bg-white cursor-pointer"
-        >
-          <label
-            htmlFor="input-image"
-            className="h-full w-full flex items-center justify-center cursor-pointer"
-          >
+        <div id="image-container" style={{ scale: 0 }} className="h-full w-full rounded-4xl overflow-hidden bg-white cursor-pointer">
+          <label htmlFor="input-image" className="h-full w-full flex items-center justify-center cursor-pointer">
             {image != "" ? (
               <img className="h-full w-full object-cover rounded-4xl" src={image} />
             ) : (
@@ -31,6 +17,7 @@ export function SquareShape({
             id="input-image"
             type="file"
             className="hidden"
+            accept="image/*"
             onChange={(event) => {
               if (event.target.files) {
                 const [file] = event.target.files;
