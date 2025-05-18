@@ -11,7 +11,7 @@ import Specialist from "./components/specialist";
 import LoginPage from "./components/sign-in";
 import { Archive } from "./page/archive";
 import { Navigation } from "./components/navigation/navigation";
-import { Gallery } from "./components/photo/gallery/gallery";
+import { Gallery, GalleryPage } from "./components/photo/gallery/gallery";
 
 // const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -24,7 +24,7 @@ export function App() {
         <Routes>
           {/* <Route path="/" element={<Story />} /> */}
           {/* <Route path="/" element={<Gallery />} /> */}
-          <Route path="/" element={<Gallery />} />
+          <Route path="/" element={<GalleryPage />} />
           <Route path="/add-fun-story" element={<AddFunStory />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/fun-story/:id" element={<FunStoryPage />} />
