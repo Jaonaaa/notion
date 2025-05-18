@@ -6,10 +6,12 @@ import { base_url } from "../queries";
 import { formatNumber } from "../helpers/number-helper";
 import { addVote } from "../queries/vote";
 import { useNavigate } from "react-router-dom";
+import { CopyIcon } from "lucide-react";
 
 export function FullScreenModal({ story, onHide = () => {} }) {
   const navigate = useNavigate();
   const [votes, setVotes] = useState(story.votes || 0);
+  const [copied, setCopied] = useState(false);
 
   const hide = () => {
     gsap.to("#full-screen-modal-overlay", {
@@ -52,24 +54,34 @@ export function FullScreenModal({ story, onHide = () => {} }) {
     });
   };
 
+  const copyToClipboard = () => {
+    const url =
+      story.mode === "fun"
+        ? `${window.location.origin}/fun-story/${story.id}`
+        : `${window.location.origin}/gallery-history?memoryId=${story.id}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+      },
+      (err) => {
+        console.error("Erreur lors de la copie du lien : ", err);
+      }
+    );
+  };
+
   return (
     <>
-      <div
-        id="full-screen-modal-overlay"
-        style={{ opacity: 0 }}
-        className="fixed z-100 inset-0 bg-[#00000058]"
-      ></div>
+      <div id="full-screen-modal-overlay" style={{ opacity: 0 }} className="fixed z-100 inset-0 bg-[#00000058]"></div>
       <div
         id="full-screen-modal"
         style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }}
         className="fixed inset-0 z-100 bg-white flex select-none"
       >
         <div className="w-2/5 h-full overflow-hidden">
-          <img
-            id="full-screen-modal-image"
-            className="w-full h-full object-cover"
-            src={`${base_url}${story.image}`}
-          />
+          <img id="full-screen-modal-image" className="w-full h-full object-cover" src={`${base_url}${story.image}`} />
         </div>
 
         <div className="w-3/5 relative h-full flex flex-col py-32 px-32">
@@ -103,18 +115,32 @@ export function FullScreenModal({ story, onHide = () => {} }) {
                 Commenter
               </button>
             </div>
-            <button
-              onClick={() => {
-                if (story.mode == "fun") {
-                  navigate(`/fun-story/${story.id}`);
-                } else {
-                  navigate(`/gallery-history?memoryId=${story.id}`);
-                }
-              }}
-              className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0"
-            >
-              Visiter
-            </button>
+            <div className="flex gap-2 align-center justify-center">
+              {copied && <div className="text-green-500 text-xs justify-center items-center flex">Lien copié !</div>}
+              <button
+                onClick={() => {
+                  copyToClipboard();
+                }}
+                className="border-2 inline-flex ml-auto items-center gap-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l bg-white text-black opacity-0"
+              >
+                <span>
+                  <CopyIcon size={20} />
+                </span>
+                <span>Copier le lien</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (story.mode == "fun") {
+                    navigate(`/fun-story/${story.id}`);
+                  } else {
+                    navigate(`/gallery-history?memoryId=${story.id}`);
+                  }
+                }}
+                className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0"
+              >
+                Visiter
+              </button>
+            </div>
           </div>
 
           <span className="absolute top-7 right-8 cursor-pointer" onClick={hide}>
