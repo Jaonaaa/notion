@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import "./index.sass";
 import Memory from "./memory";
 import ModalSong from "./modal-song";
-import { addMemories, getMemories } from "../../../queries/add-simple-memory";
+import { addMemories } from "../../../queries/add-simple-memory";
 
 const ListMemory = ({ toogleModal, showModal }) => {
   const [hideList, setHideList] = useState(true);
@@ -67,7 +67,12 @@ const ListMemory = ({ toogleModal, showModal }) => {
           media: memory.image,
         })),
       };
-      await addMemories(payload);
+      try {
+        await addMemories(payload);
+        window.location.href = "/profile";
+      } catch {
+        ///
+      }
     }
   };
 
