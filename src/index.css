@@ -9,6 +9,9 @@
   font-family: Little Bubble;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 /* Custom animation classes */
 .osmo-gradient {

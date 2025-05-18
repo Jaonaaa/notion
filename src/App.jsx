@@ -9,6 +9,7 @@ import { FunStoryPage } from "./page/fun-story-page";
 import AddSimpleMemory from "./components/stories/add-simple-memory";
 import Specialist from "./components/specialist";
 import LoginPage from "./components/sign-in";
+import { Archive } from "./page/archive";
 
 const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -38,6 +39,7 @@ export function App() {
           <Route path="/add-simple-story" element={<AddSimpleMemory />} />
           <Route path="/specialist" element={<Specialist />} />
           <Route path="/sign-in" element={<LoginPage />} />
+          <Route path="/archive" element={<Archive />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>
