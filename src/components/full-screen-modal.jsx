@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { Copy } from "./text/copy";
 import gsap from "gsap";
+import { formatDate } from "../helpers/date-helper";
 
-export function FullScreenModal({ onHide = () => {} }) {
+export function FullScreenModal({ story, onHide = () => {} }) {
   const hide = () => {
     gsap.to("#full-screen-modal-overlay", {
       opacity: 0,
@@ -56,20 +57,16 @@ export function FullScreenModal({ onHide = () => {} }) {
 
         <div className="w-3/5 relative h-full flex flex-col py-32 px-32">
           <Copy delay={0.8}>
-            <h2 className="text-sm">Je suis malade</h2>
+            <h2 className="text-sm">{story.titre}</h2>
           </Copy>
           <div className="mt-32"></div>
           <Copy delay={0.8}>
-            <p className="text-2xl font-medium leading-[1.3]">
-              She wanted rainbow hair. That's what she told the hairdresser. It should be deep
-              rainbow colors, too. She wasn't interested in pastel rainbow hair. She wanted it deep
-              and vibrant so there was no doubt that she had done this on purpose.
-            </p>
+            <p className="text-2xl font-medium leading-[1.3]">{story.contenu}</p>
           </Copy>
           <div className="mt-24"></div>
           <p style={{ opacity: 0 }} className="full-screen-modal-details flex">
             <span className="w-36">Date</span>
-            <span>24.04.2025</span>
+            <span>{formatDate(story.date)}</span>
           </p>
           <div className="mt-auto flex justify-between full-screen-modal-button">
             <button className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l bg-white text-black opacity-0">

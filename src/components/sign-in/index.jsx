@@ -38,8 +38,9 @@ const LoginPage = () => {
       />
       <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden">
         <div className="md:w-[47rem] h-[100vh] p-8 md:p-12 flex flex-col animate-fade-in" style={{ backgroundColor: "#f5f5f3" }}>
-          <div className="mb-8">
-            <h1 className="text-xl font-medium animate-fade-in-up">Notion</h1>
+          <div className="mb-8 -translate-x-2 flex gap-2 items-center">
+            <img src="/logo-dark.png" alt="Logo" className="text-sm w-8 h-8  animate-fade-in-up" />
+            <h1 className="-ml-2 text-xl font-medium animate-fade-in-up">Notion</h1>
           </div>
 
           <div className="flex-grow flex flex-col justify-center max-w-md mx-auto w-full">
@@ -55,7 +56,7 @@ const LoginPage = () => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-gray-100 border-0 rounded-sm focus:outline-none focus:ring-1"
+                  className="w-full px-3 py-2 text-sm bg-gray-200 border-0 rounded-sm focus:outline-none focus:ring-1"
                   style={{ focusRingColor: "#1a1a1a" }}
                   required
                 />
@@ -73,7 +74,7 @@ const LoginPage = () => {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-gray-100 border-0 rounded-sm focus:outline-none focus:ring-1"
+                    className="w-full px-3 py-2 text-sm bg-gray-200 border-0 rounded-sm focus:outline-none focus:ring-1"
                     style={{ focusRingColor: "#1a1a1a" }}
                     required
                   />

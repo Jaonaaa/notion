@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { MeshReflectorMaterial, Environment } from "@react-three/drei";
 import Frames from "./components/Frames";
+import { getStoryById } from "../../queries/stories";
 
 const pexel = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
 export const imagesDefaultGallery = [
@@ -23,9 +24,8 @@ export const imagesDefaultGallery = [
 export const GalleryCanvas = ({ images }) => {
   const [loaded, setLoaded] = useState(false);
 
-  console.log(images);
-
   useEffect(() => {
+    getStoryById(1);
     const loadImages = async () => {
       const promises = images.map(({ url }) => {
         return new Promise((resolve, reject) => {
@@ -36,11 +36,9 @@ export const GalleryCanvas = ({ images }) => {
         });
       });
 
-      console.log("Waiting for images to load...");
       for (const promise of promises) {
         await promise;
       }
-      console.log("All images loaded");
       setLoaded(true);
     };
     loadImages();
@@ -58,7 +56,7 @@ export const GalleryCanvas = ({ images }) => {
             width: "100vw",
             height: "100vh",
           }}
-          className=" bg-gradient-to-b from-[#eee5a0] to-[#dfedec] "
+          className=" bg-gradient-to-b from-[#010008] to-[#171932] "
         ></div>
       ) : null}
 

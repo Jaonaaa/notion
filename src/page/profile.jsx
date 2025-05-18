@@ -5,18 +5,23 @@ import { useEffect, useRef, useState } from "react";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import products from "./profile-data";
 import ReactLenis from "lenis/react";
 import { useScrambleText } from "../hooks/use-scramble-text";
 import { FullScreenModal } from "../components/full-screen-modal";
 import { AddStoryChoseModal } from "../components/add-story-chose-modal";
+import fetchUserData from "../queries/profile";
+import { base_url } from "../queries";
+import { getUserName } from "../helpers/token";
 
 export function Profile() {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
-
+  const [profileData, setProfileData] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [isChosing, setIsChosing] = useState(false);
+
+  const [storyForModal, setStoryForModal] = useState(null);
+  const [profileLayout, setProfileLayout] = useState([]);
 
   useScrambleText({ target: titleRef });
 
@@ -33,7 +38,17 @@ export function Profile() {
     [0, 0, 1, 0],
   ];
 
-  const getProductLayout = () => {
+  const getUserData = async () => {
+    const res = await fetchUserData();
+    console.log(res);
+    setProfileData(res);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  const getProfileLayout = () => {
     let productIndex = 0;
     const layout = [];
 
@@ -44,8 +59,8 @@ export function Profile() {
         const productCount = productDistribution[rowIndex][colIndex];
 
         for (let i = 0; i < productCount; i++) {
-          if (productIndex < products.length) {
-            rowLayout[colIndex].push(products[productIndex]);
+          if (productIndex < profileData.length) {
+            rowLayout[colIndex].push(profileData[productIndex]);
             productIndex++;
           }
         }
@@ -57,7 +72,9 @@ export function Profile() {
     return layout;
   };
 
-  const productLayout = getProductLayout();
+  useEffect(() => {
+    setProfileLayout(getProfileLayout());
+  }, [profileData]);
 
   useGSAP(
     () => {
@@ -95,7 +112,7 @@ export function Profile() {
       <div id="profile-container" className="catalogue-page" ref={containerRef}>
         <div className="mb-48"></div>
         <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-12">
-          John Doe
+          {getUserName()}
         </h1>
         <div className="w-full flex justify-center mb-24">
           <button
@@ -106,30 +123,33 @@ export function Profile() {
           </button>
         </div>
         <div className="products">
-          {productLayout.map((row, rowIndex) => (
+          {profileLayout.map((row, rowIndex) => (
             <div className="row" key={`row-${rowIndex}`}>
               {row.map((column, colIndex) => (
                 <div
-                  className={`column ${column.length === 0 ? "empty-column" : ""}`}
+                  className={`column ${column.length === 0 ? "empty-column" : ""} cursor-pointer`}
                   key={`col-${rowIndex}-${colIndex}`}
                 >
                   {column.map((product) => (
                     <div
                       key={product.id}
                       className="product-link"
-                      // onClick={() => navigateTo(`/catalogue/${generateSlug(product.name)}`)}
-                      onClick={() => setIsModal(true)}
+                      onClick={() => {
+                        setStoryForModal(product);
+                        console.log(product);
+                        setIsModal(true);
+                      }}
                     >
                       <div className="product-card">
                         <div className="product-card-image">
                           <img
-                            src={`/images/${product.previewImg}`}
+                            src={`${base_url}${product.image}`}
                             alt={product.name}
                             className="product-card-img"
                           />
                         </div>
                         <div className="product-info">
-                          <p className="uppercase -mt-1 font-medium text-sm">{product.name}</p>
+                          <p className="uppercase -mt-1 font-medium text-sm">{product.titre}</p>
                         </div>
                       </div>
                     </div>
@@ -141,7 +161,7 @@ export function Profile() {
         </div>
         <div className="pb-10"></div>
       </div>
-      {isModal && <FullScreenModal />}
+      {isModal && <FullScreenModal onHide={() => setIsModal(false)} story={storyForModal} />}
       {isChosing && <AddStoryChoseModal onHide={() => setIsChosing(false)} />}
     </ReactLenis>
   );

@@ -2,9 +2,13 @@ import { useLayoutEffect, useState } from "react";
 import { toBase64 } from "../../helpers/file-helper";
 import { Music, Volume2 } from "lucide-react";
 import gsap from "gsap";
+import { addMemories } from "../../queries/add-simple-memory";
+import { useNavigate } from "react-router-dom";
 
 export function AddFormLastStep({ values, formValues }) {
   const [sound, setSound] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     const filteredElements = values.filter(({ image }) => image != "");
@@ -23,7 +27,7 @@ export function AddFormLastStep({ values, formValues }) {
       audio: sound,
       image: filteredElements[0].image,
       elements: filteredElements.map((value) => ({
-        messagecontent: value.text,
+        description: value.text,
         media: value.image,
         emoticone: value.emoji,
         forme: value.disposition,
@@ -31,15 +35,17 @@ export function AddFormLastStep({ values, formValues }) {
       mode: "fun",
     };
 
-    console.log(data);
-    fetch("http://172.20.10.4:4000/api/story", {
-      method: "POST",
-      headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJMb2dpbiI6ImxpbnRzQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTEzNDU4LCJleHAiOjE3NDc1MzE0NTh9.i9jBeK0iR-whHcHioVl1i6J41Q4OyGAd5NBi4sAz1ng",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    // fetch("http://172.20.10.4:4000/api/story", {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization:
+    //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJMb2dpbiI6ImxpbnRzQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTEzNDU4LCJleHAiOjE3NDc1MzE0NTh9.i9jBeK0iR-whHcHioVl1i6J41Q4OyGAd5NBi4sAz1ng",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+    addMemories(data).then(() => {
+      navigate("/profile");
     });
   };
 

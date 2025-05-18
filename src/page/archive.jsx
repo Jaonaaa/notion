@@ -8,7 +8,7 @@ export function Archive() {
       <div className="w-screen px-4">
         <div className="mt-40"></div>
         <h1 className="text-7xl font-medium indent-10 w-2/3 leading-[0.95]">
-          Plongez dans les fins les plus appréciées par la communauté
+          Plongez dans les fins les plus appréciées par la commu
         </h1>
         <div className="mt-16"></div>
         <Copy>
