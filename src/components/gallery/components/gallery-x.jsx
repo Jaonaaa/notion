@@ -13,7 +13,7 @@ const GalleryX = () => {
             </h1>
           </div>
 
-          <div className="frame__links flex gap-5">
+          <div className="frame__links flex gap-5 justify-between px-3">
             <a href="/sign-in" className="inline-flex gap-5 items-center transition-opacity hover:opacity-50 duration-200">
               SE CONNECTER
               <ArrowRightFromLine size={17} />

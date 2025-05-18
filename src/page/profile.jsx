@@ -1,5 +1,5 @@
 import "./profile.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // import Footer from "@/components/Footer/Footer";
 
@@ -9,11 +9,12 @@ import products from "./profile-data";
 import ReactLenis from "lenis/react";
 import { useScrambleText } from "../hooks/use-scramble-text";
 import { FullScreenModal } from "../components/full-screen-modal";
+import fetchUserData from "../queries/profile";
 
 export function Profile() {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
-
+  const [profileData, setProfileData] = useState({});
   const [isModal, setIsModal] = useState(false);
 
   useScrambleText({ target: titleRef });
@@ -30,6 +31,16 @@ export function Profile() {
     [0, 1, 0, 1],
     [0, 0, 1, 0],
   ];
+
+  const getUserData = async () => {
+    const res = await fetchUserData();
+    console.log(res);
+    setProfileData(res);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const getProductLayout = () => {
     let productIndex = 0;
@@ -91,10 +102,7 @@ export function Profile() {
           {productLayout.map((row, rowIndex) => (
             <div className="row" key={`row-${rowIndex}`}>
               {row.map((column, colIndex) => (
-                <div
-                  className={`column ${column.length === 0 ? "empty-column" : ""}`}
-                  key={`col-${rowIndex}-${colIndex}`}
-                >
+                <div className={`column ${column.length === 0 ? "empty-column" : ""}`} key={`col-${rowIndex}-${colIndex}`}>
                   {column.map((product) => (
                     <div
                       key={product.id}
@@ -104,11 +112,7 @@ export function Profile() {
                     >
                       <div className="product-card">
                         <div className="product-card-image">
-                          <img
-                            src={`/images/${product.previewImg}`}
-                            alt={product.name}
-                            className="product-card-img"
-                          />
+                          <img src={`/images/${product.previewImg}`} alt={product.name} className="product-card-img" />
                         </div>
                         <div className="product-info">
                           <p className="uppercase -mt-1 font-medium text-sm">{product.name}</p>
