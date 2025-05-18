@@ -6,7 +6,7 @@ import { base_url } from "../queries";
 
 export function AddComment() {
   const { id } = useParams();
-  const [image, setImage] = useState("public/placeholder.svg");
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     getStoryById(id).then((response) => {

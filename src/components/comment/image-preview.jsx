@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { fabric } from "fabric";
@@ -7,47 +7,59 @@ import ToolBar from "./toolbar";
 import { addComment } from "../../queries/comment";
 
 const ImagePreview = ({ imageUrl, onAddDrawing, idStory = 1 }) => {
-  console.log(imageUrl);
-
   const [fabricCanvas, setFabricCanvas] = useState(null);
   const [activeColor, setActiveColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(3);
   const [activeTool, setActiveTool] = useState("brush");
+  const canvasRef = useRef(null);
 
-  const initCanvas = (canvas) => {
-    if (!canvas || fabricCanvas) return;
+  const initCanvas = useCallback(
+    (canvas) => {
+      if (!canvas || fabricCanvas) return;
+      console.log("SSSS");
 
-    const newCanvas = new fabric.Canvas(canvas, {
-      isDrawingMode: true,
-      width: 900,
-      height: 600,
-    });
-
-    if (imageUrl) {
-      fabric.Image.fromURL(imageUrl, (img) => {
-        img.scaleToWidth(newCanvas.width || 900);
-
-        const canvasWidth = newCanvas.getWidth();
-        const canvasHeight = newCanvas.getHeight();
-
-        const imgWidth = img.getScaledWidth();
-        const imgHeight = img.getScaledHeight();
-
-        img.set({
-          left: (canvasWidth - imgWidth) / 2,
-          top: (canvasHeight - imgHeight) / 2,
-          originX: "left",
-          originY: "top",
-          selectable: false,
-        });
-
-        newCanvas.setBackgroundImage(img, newCanvas.renderAll.bind(newCanvas));
+      const newCanvas = new fabric.Canvas(canvas, {
+        isDrawingMode: true,
+        width: 900,
+        height: 600,
       });
+
+      console.log(imageUrl);
+
+      if (imageUrl) {
+        fabric.Image.fromURL(imageUrl, (img) => {
+          img.scaleToWidth(newCanvas.width || 900);
+
+          const canvasWidth = newCanvas.getWidth();
+          const canvasHeight = newCanvas.getHeight();
+
+          const imgWidth = img.getScaledWidth();
+          const imgHeight = img.getScaledHeight();
+
+          img.set({
+            left: (canvasWidth - imgWidth) / 2,
+            top: (canvasHeight - imgHeight) / 2,
+            originX: "left",
+            originY: "top",
+            selectable: false,
+          });
+          console.log("PAinted", img);
+
+          newCanvas.setBackgroundImage(img, newCanvas.renderAll.bind(newCanvas));
+        });
+      }
+      newCanvas.freeDrawingBrush.color = activeColor;
+      newCanvas.freeDrawingBrush.width = brushSize;
+      setFabricCanvas(newCanvas);
+    },
+    [fabricCanvas, imageUrl, activeColor, brushSize]
+  );
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      initCanvas(canvasRef.current);
     }
-    newCanvas.freeDrawingBrush.color = activeColor;
-    newCanvas.freeDrawingBrush.width = brushSize;
-    setFabricCanvas(newCanvas);
-  };
+  }, [imageUrl, initCanvas]);
 
   const handleColorChange = (color) => {
     setActiveColor(color);
@@ -118,7 +130,7 @@ const ImagePreview = ({ imageUrl, onAddDrawing, idStory = 1 }) => {
       <div className="flex justify-between items-center mb-4"></div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1">
-          <canvas id="drawing-canvas" ref={initCanvas} />
+          <canvas id="drawing-canvas" ref={canvasRef} />
         </div>
         <div className="flex flex-col gap-4 w-full md:w-64">
           <div>
