@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { MeshReflectorMaterial, Environment } from "@react-three/drei";
 import Frames from "./components/Frames";
 import { getStoryById } from "../../queries/stories";
+import { base_url } from "../../queries";
 
 const pexel = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
 export const imagesDefaultGallery = [
@@ -23,26 +24,46 @@ export const imagesDefaultGallery = [
 
 export const GalleryCanvas = ({ images }) => {
   const [loaded, setLoaded] = useState(false);
+  const [stories, setStories] = useState([]);
+
+  const loadImages = async (images) => {
+    const promises = images.map(({ url }) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    });
+
+    for (const promise of promises) {
+      await promise;
+    }
+    setLoaded(true);
+  };
+
+  const getData = useCallback(async () => {
+    const res = await getStoryById(1);
+    const storiesFetched = res.StoryElements.map((item, i) => ({
+      ...item,
+      position: imagesDefaultGallery[i].position,
+      rotation: imagesDefaultGallery[i].rotation,
+    }));
+
+    setStories(storiesFetched);
+
+    const medias = res.StoryElements.map((item) => ({
+      url: base_url + item.media,
+    }));
+    console.log("====================================");
+    console.log(medias);
+    console.log("====================================");
+    await loadImages(medias);
+  }, []);
 
   useEffect(() => {
-    getStoryById(1);
-    const loadImages = async () => {
-      const promises = images.map(({ url }) => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = url;
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      });
-
-      for (const promise of promises) {
-        await promise;
-      }
-      setLoaded(true);
-    };
-    loadImages();
-  }, [images]);
+    getData();
+  }, [getData]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
@@ -64,7 +85,7 @@ export const GalleryCanvas = ({ images }) => {
         <color attach="background" args={["#191920"]} />
         <fog attach="fog" args={["#191920", 0, 15]} />
         <group position={[0, -0.5, 0]}>
-          <Frames images={images} />
+          <Frames images={stories} />
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[50, 50]} />
             <MeshReflectorMaterial

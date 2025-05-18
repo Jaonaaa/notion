@@ -10,6 +10,7 @@ import ReactLenis from "lenis/react";
 import { useScrambleText } from "../hooks/use-scramble-text";
 import { FullScreenModal } from "../components/full-screen-modal";
 import fetchUserData from "../queries/profile";
+import ImagePreview from "../components/comment/image-preview";
 
 export function Profile() {
   const containerRef = useRef(null);
@@ -94,6 +95,7 @@ export function Profile() {
   return (
     <ReactLenis root>
       <div className="catalogue-page" ref={containerRef}>
+        <ImagePreview />
         <div className="mb-48"></div>
         <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-48">
           John Doe

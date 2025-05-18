@@ -17,6 +17,7 @@ async function signIn(email, password) {
 
     const data = await response.json();
     localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
     return data;
   } catch (error) {
     return { error: error.message };

@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRoute, useLocation } from "wouter";
 import { easing } from "maath";
 import Frame from "./Frame";
+import { base_url } from "../../../queries";
 
 const GOLDENRATIO = 1.61803398875;
 const path = "/gallery-history";
@@ -39,7 +40,7 @@ const Frames = ({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() })
       onPointerMissed={() => setLocation(path)}
     >
       {images.map((props) => (
-        <Frame key={props.url} {...props} />
+        <Frame key={props.media} {...props} url={base_url + props.media} />
       ))}
     </group>
   );
