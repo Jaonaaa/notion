@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./page/home";
 import { MenuContextProvider } from "./contexts/menu-context";
 import { AddFunStory } from "./page/add-fun-story";
-import { imagesDefaultGallery } from "./components/history-gallery";
 import { lazy } from "react";
 import { Profile } from "./page/profile";
 import { FunStoryPage } from "./page/fun-story-page";
@@ -31,14 +30,8 @@ export function App() {
           <Route path="/" element={<Gallery />} />
           {/* <Route path="/story" element={<Story />} /> */}
           <Route path="/home" element={<Home />} />
-          <Route
-            path="/gallery-history"
-            element={<GalleryCanvas images={imagesDefaultGallery} />}
-          />
-          <Route
-            path="/gallery-history/frames/:id"
-            element={<GalleryCanvas images={imagesDefaultGallery} />}
-          />
+          <Route path="/gallery-history" element={<GalleryCanvas />} />
+          <Route path="/gallery-history/frames/:id" element={<GalleryCanvas />} />
           <Route path="/add-simple-story" element={<AddSimpleMemory />} />
           <Route path="/specialist" element={<Specialist />} />
           <Route path="/sign-in" element={<LoginPage />} />

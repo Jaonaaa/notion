@@ -18,7 +18,6 @@ const ColorPicker = ({ color, onChange }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="text-sm font-medium mb-2">Couleurs</div>
       <div className="flex flex-wrap gap-2 p-2 border rounded-lg bg-white shadow-sm">
         {colors.map((c) => (
           <div

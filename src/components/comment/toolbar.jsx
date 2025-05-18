@@ -1,7 +1,7 @@
 import React from "react";
 import { Brush, Pencil, Eraser, MousePointer, Trash2 } from "lucide-react";
 
-const ToolBar = ({ activeTool, onToolChange, onClear }) => {
+const ToolBar = ({ activeTool, onToolChange, onClear, brushSize, onBrushSizeChange }) => {
   return (
     <div className="flex flex-wrap gap-2 items-center">
       <div className="flex items-center gap-1 border rounded-lg p-1 bg-white shadow-sm">
@@ -35,8 +35,23 @@ const ToolBar = ({ activeTool, onToolChange, onClear }) => {
         </button>
       </div>
 
+      {/* Brush size slider */}
+      <div className="flex items-center gap-2 border rounded-lg p-2 bg-white shadow-sm">
+        <span className="text-sm font-medium">Taille:</span>
+        <input
+          type="range"
+          min={1}
+          max={20}
+          step={1}
+          value={brushSize}
+          className="w-24"
+          onChange={(e) => onBrushSizeChange(Number(e.target.value))}
+        />
+        <span className="text-xs w-6 text-center">{brushSize}</span>
+      </div>
+
       <div className="flex gap-1">
-        <button className="border rounded p-2 bg-white hover:bg-gray-100 transition" onClick={onClear} title="Effacer">
+        <button onClick={onClear} title="Effacer">
           <Trash2 size={18} />
         </button>
       </div>
