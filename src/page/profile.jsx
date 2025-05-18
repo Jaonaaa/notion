@@ -112,6 +112,7 @@ export function Profile() {
     <ReactLenis root>
       <div id="profile-container" className="catalogue-page" ref={containerRef}>
         <div className="mb-48"></div>
+        <ImagePreview imageUrl="public/placeholder.svg" />
         <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-12">
           {getUserName()}
         </h1>
@@ -143,11 +144,7 @@ export function Profile() {
                     >
                       <div className="product-card">
                         <div className="product-card-image">
-                          <img
-                            src={`${base_url}${product.image}`}
-                            alt={product.name}
-                            className="product-card-img"
-                          />
+                          <img src={`${base_url}${product.image}`} alt={product.name} className="product-card-img" />
                         </div>
                         <div className="product-info">
                           <p className="uppercase -mt-1 font-medium text-sm">{product.titre}</p>
