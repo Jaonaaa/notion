@@ -1,8 +1,21 @@
 import ReactLenis from "lenis/react";
 import { ArchiveRow } from "../components/archive-row";
 import { Copy } from "../components/text/copy";
+import { useEffect, useState } from "react";
+import { getAllStories, getArchive } from "../queries/stories";
+import { formatDate } from "../helpers/date-helper";
+import { base_url } from "../queries";
+import { FullScreenModal } from "../components/full-screen-modal";
 
 export function Archive() {
+  const [archives, setArchives] = useState([]);
+  const [activeArchive, setActiveArchive] = useState(null);
+  const [isModal, setIsModal] = useState(false);
+
+  useEffect(() => {
+    getAllStories().then(setArchives);
+  }, []);
+
   return (
     <ReactLenis root>
       <div className="w-screen px-4">
@@ -19,13 +32,17 @@ export function Archive() {
           </p>
         </Copy>
         <div className="mt-32"></div>
-        <ArchiveRow
-          text={"Exploration des forêts malgaches : un héritage à préserver"}
-          author={"Rija Andriamasinoro"}
-          date={"12 janvier 2024"}
-          image={"/images/1.png"}
-        />
-        <ArchiveRow
+        {archives.map((archive, index) => (
+          <ArchiveRow
+            key={index}
+            text={archive.titre}
+            author={""}
+            date={formatDate(archive.date)}
+            image={`${base_url}${archive.image}`}
+            onClick={() => {}}
+          />
+        ))}
+        {/* <ArchiveRow
           text={"Comment l’art numérique révolutionne la scène contemporaine"}
           author={"Lina Rakotomalala"}
           date={"28 février 2024"}
@@ -138,7 +155,8 @@ export function Archive() {
           author={"Voahirana Raveloson"}
           date={"30 mai 2024"}
           image={"/images/20.png"}
-        />
+        /> */}
+        <FullScreenModal />
         <div className="h-96"></div>
       </div>
     </ReactLenis>
