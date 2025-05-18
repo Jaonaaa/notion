@@ -142,7 +142,11 @@ export function Profile() {
                     >
                       <div className="product-card">
                         <div className="product-card-image">
-                          <img src={`${base_url}${product.image}`} alt={product.name} className="product-card-img" />
+                          <img
+                            src={`${base_url}${product.image}`}
+                            alt={product.name}
+                            className="product-card-img"
+                          />
                         </div>
                         <div className="product-info">
                           <p className="uppercase -mt-1 font-medium text-sm">{product.titre}</p>

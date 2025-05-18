@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { CustomEase } from "gsap/dist/CustomEase";
-import items from "./items";
+// import items from "./items";
 
 import "./gallery.scss";
 import { FullScreenModal } from "../../full-screen-modal";
+import { getAllStories } from "../../../queries/stories";
+import { base_url } from "../../../queries";
 
 let SplitType;
 
-export function Gallery() {
+export function Gallery({ stories = [] }) {
+  const items = stories.map((value) => value.titre);
+
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const overlayRef = useRef(null);
@@ -18,6 +22,7 @@ export function Gallery() {
   const [initialized, setInitialized] = useState(false);
 
   const [isFullScreenModal, setIsFullScreenModal] = useState(false);
+  const [story, setStory] = useState(null);
 
   useEffect(() => {
     const importSplitType = async () => {
@@ -51,7 +56,7 @@ export function Gallery() {
     };
   }, []);
 
-  const itemCount = 20;
+  const itemCount = stories.length;
   const itemGap = 150;
   const columns = 4;
   const itemWidth = 120;
@@ -81,6 +86,7 @@ export function Gallery() {
     activeItemId: null,
     titleSplit: null,
     animationFrameId: null,
+    stories: stories,
   });
 
   const setAndAnimateTitle = (title) => {
@@ -163,15 +169,18 @@ export function Gallery() {
         item.dataset.col = col;
         item.dataset.row = row;
 
-        const itemNum = (Math.abs(row * columns + col) % itemCount) + 1;
+        const itemNum = Math.abs(row * columns + col) % itemCount;
+        item.setAttribute("numero", itemNum);
+
         const img = document.createElement("img");
-        img.src = `/img${itemNum}.jpg`;
+        img.src = `${base_url}${stateRef.current.stories[itemNum]?.image}`;
         img.alt = `Image ${itemNum}`;
         item.appendChild(img);
 
         item.addEventListener("click", (e) => {
           if (state.mouseHasMoved || state.isDragging) return;
           // handleItemClick(item);
+          setStory(stories[itemNum]);
           setIsFullScreenModal(true);
         });
 
@@ -501,18 +510,34 @@ export function Gallery() {
 
   return (
     <>
-      <div className="gallery-container" ref={containerRef}>
-        <div className="gallery-canvas-container">
-          <div className="canvas" id="canvas" ref={canvasRef}></div>
+      <>
+        <div className="gallery-container" ref={containerRef}>
+          <div className="gallery-canvas-container">
+            <div className="canvas" id="canvas" ref={canvasRef}></div>
+          </div>
+          <div className="overlay" id="overlay" ref={overlayRef}></div>
         </div>
-        <div className="overlay" id="overlay" ref={overlayRef}></div>
-      </div>
 
-      <div className="project-title" ref={projectTitleRef}>
-        <p></p>
-      </div>
+        <div className="project-title" ref={projectTitleRef}>
+          <p></p>
+        </div>
+      </>
 
-      {isFullScreenModal && <FullScreenModal onHide={() => setIsFullScreenModal(false)} />}
+      {isFullScreenModal && (
+        <FullScreenModal story={story} onHide={() => setIsFullScreenModal(false)} />
+      )}
     </>
   );
+}
+
+export function GalleryPage() {
+  const [stories, setStories] = useState([]);
+
+  useEffect(() => {
+    getAllStories().then((response) => {
+      setStories(response);
+    });
+  }, []);
+
+  return stories.length > 0 && <Gallery stories={stories} />;
 }

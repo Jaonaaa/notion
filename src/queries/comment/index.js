@@ -3,7 +3,7 @@ import { getToken } from "../../helpers/token.js";
 
 export const addComment = async (data) => {
   try {
-    const response = await fetch(base_url + "api/comments ", {
+    const response = await fetch(base_url + `api/story/${data.idstory}/comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

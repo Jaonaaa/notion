@@ -1,9 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Copy } from "./text/copy";
 import gsap from "gsap";
 import { formatDate } from "../helpers/date-helper";
+import { base_url } from "../queries";
+import { formatNumber } from "../helpers/number-helper";
+import { addVote } from "../queries/vote";
+import { useNavigate } from "react-router-dom";
 
 export function FullScreenModal({ story, onHide = () => {} }) {
+  const navigate = useNavigate();
+  const [votes, setVotes] = useState(story.votes || 0);
+
   const hide = () => {
     gsap.to("#full-screen-modal-overlay", {
       opacity: 0,
@@ -35,6 +42,16 @@ export function FullScreenModal({ story, onHide = () => {} }) {
     });
   }, []);
 
+  const handleVote = () => {
+    addVote(story.id).then((response) => {
+      if (response.voted) {
+        setVotes(votes + 1);
+      } else {
+        setVotes(votes - 1);
+      }
+    });
+  };
+
   return (
     <>
       <div
@@ -51,7 +68,7 @@ export function FullScreenModal({ story, onHide = () => {} }) {
           <img
             id="full-screen-modal-image"
             className="w-full h-full object-cover"
-            src="/images/13.png"
+            src={`${base_url}${story.image}`}
           />
         </div>
 
@@ -61,7 +78,7 @@ export function FullScreenModal({ story, onHide = () => {} }) {
           </Copy>
           <div className="mt-32"></div>
           <Copy delay={0.8}>
-            <p className="text-2xl font-medium leading-[1.3]">{story.contenu}</p>
+            <p className="text-xl font-medium leading-[1.3]">{story.contenu}</p>
           </Copy>
           <div className="mt-24"></div>
           <p style={{ opacity: 0 }} className="full-screen-modal-details flex">
@@ -69,10 +86,33 @@ export function FullScreenModal({ story, onHide = () => {} }) {
             <span>{formatDate(story.date)}</span>
           </p>
           <div className="mt-auto flex justify-between full-screen-modal-button">
-            <button className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l bg-white text-black opacity-0">
-              Voter
-            </button>
-            <button className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0">
+            <div className="flex gap-4 items-center">
+              <button
+                onClick={handleVote}
+                className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l bg-white text-black opacity-0"
+              >
+                Voter
+              </button>
+              ({formatNumber(votes)})
+              <button
+                onClick={() => {
+                  navigate(`/story/add-comment/${story.id}`);
+                }}
+                className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0"
+              >
+                Commenter
+              </button>
+            </div>
+            <button
+              onClick={() => {
+                if (story.mode == "fun") {
+                  navigate(`/fun-story/${story.id}`);
+                } else {
+                  navigate(`/gallery-history?memoryId=${story.id}`);
+                }
+              }}
+              className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0"
+            >
               Visiter
             </button>
           </div>

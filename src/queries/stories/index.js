@@ -19,3 +19,21 @@ export async function getStoryById(id) {
     throw error;
   }
 }
+export async function getAllStories() {
+  try {
+    const response = await fetch(base_url + `api/story/all`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getToken(),
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching story with id ${id}: ${response.statusText}`);
+    }
+    const story = await response.json();
+    return story;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
