@@ -12,7 +12,6 @@ import { AddStoryChoseModal } from "../components/add-story-chose-modal";
 import fetchUserData from "../queries/profile";
 import { base_url } from "../queries";
 import { getUserName } from "../helpers/token";
-import ImagePreview from "../components/comment/image-preview";
 
 export function Profile() {
   const containerRef = useRef(null);
@@ -112,7 +111,6 @@ export function Profile() {
     <ReactLenis root>
       <div id="profile-container" className="catalogue-page" ref={containerRef}>
         <div className="mb-48"></div>
-        <ImagePreview imageUrl="public/placeholder.svg" />
         <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-12">
           {getUserName()}
         </h1>
