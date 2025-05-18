@@ -12,6 +12,10 @@ export const menuItems = [
     to: "/stories",
   },
   {
+    label: "Spécialistes",
+    to: "/specialist",
+  },
+  {
     label: "Se connecter",
     to: "/sign-in",
   },

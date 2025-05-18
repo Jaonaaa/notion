@@ -6,6 +6,7 @@ import { getAllStories, getArchive } from "../queries/stories";
 import { formatDate } from "../helpers/date-helper";
 import { base_url } from "../queries";
 import { FullScreenModal } from "../components/full-screen-modal";
+import gsap from "gsap";
 
 export function Archive() {
   const [archives, setArchives] = useState([]);
@@ -15,6 +16,16 @@ export function Archive() {
   useEffect(() => {
     getAllStories().then(setArchives);
   }, []);
+
+  useEffect(() => {
+    if (archives.length > 0) {
+      gsap.to(".row-archive", {
+        opacity: 1,
+        duration: 0.3,
+        stagger: 0.03,
+      });
+    }
+  }, [archives]);
 
   return (
     <ReactLenis root>
@@ -32,16 +43,20 @@ export function Archive() {
           </p>
         </Copy>
         <div className="mt-32"></div>
-        {archives.map((archive, index) => (
-          <ArchiveRow
-            key={index}
-            text={archive.titre}
-            author={""}
-            date={formatDate(archive.date)}
-            image={`${base_url}${archive.image}`}
-            onClick={() => {}}
-          />
-        ))}
+        {archives.length > 0 &&
+          archives.map((archive, index) => (
+            <ArchiveRow
+              key={index}
+              text={archive.titre}
+              author={""}
+              date={formatDate(archive.date)}
+              image={`${base_url}${archive.image}`}
+              onClick={() => {
+                setActiveArchive(archive);
+                setIsModal(true);
+              }}
+            />
+          ))}
         {/* <ArchiveRow
           text={"Comment l’art numérique révolutionne la scène contemporaine"}
           author={"Lina Rakotomalala"}
@@ -156,7 +171,7 @@ export function Archive() {
           date={"30 mai 2024"}
           image={"/images/20.png"}
         /> */}
-        <FullScreenModal />
+        {isModal && <FullScreenModal story={activeArchive} onHide={() => setIsModal(false)} />}
         <div className="h-96"></div>
       </div>
     </ReactLenis>
