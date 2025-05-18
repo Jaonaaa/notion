@@ -6,7 +6,30 @@ import { lerp } from "./utils/math";
 import fragment from "./demo-2/post.glsl";
 import Media from "./demo-2/Media";
 
-const vitesse = 100;
+import { Vec3, Mat4 } from "ogl";
+
+const startSpeed = 220;
+export function getRayFromCamera(ndc, camera) {
+  const invVP = new Mat4();
+
+  const vp = new Mat4();
+  vp.multiply(camera.projectionMatrix, camera.viewMatrix);
+  invVP.inverse(vp);
+
+  const nearPoint = new Vec3(ndc.x, ndc.y, -1);
+  nearPoint.transformDirection(invVP);
+
+  const farPoint = new Vec3(ndc.x, ndc.y, 1);
+  farPoint.transformDirection(invVP);
+
+  const direction = new Vec3().sub(farPoint, nearPoint).normalize();
+
+  return {
+    origin: nearPoint,
+    direction,
+  };
+}
+
 export default class App {
   constructor() {
     this.scroll = {
@@ -16,7 +39,7 @@ export default class App {
       last: 0,
     };
 
-    this.speed = 2;
+    this.speed = startSpeed;
 
     this.createRenderer();
     this.createCamera();
@@ -83,6 +106,18 @@ export default class App {
     });
   }
 
+  onClick(event) {
+    const ndc = new Vec2((event.clientX / this.screen.width) * 2 - 1, -(event.clientY / this.screen.height) * 2 + 1);
+
+    const { origin, direction } = getRayFromCamera(ndc, this.camera);
+
+    this.medias.forEach((media) => {
+      if (media.raycast(origin, direction)) {
+        console.log("Clicked media:", media.element);
+      }
+    });
+  }
+
   createMedias() {
     this.mediasElements = document.querySelectorAll(".demo-2__gallery__figure");
     this.medias = Array.from(this.mediasElements).map((element) => {
@@ -94,6 +129,7 @@ export default class App {
         screen: this.screen,
         viewport: this.viewport,
         width: this.galleryWidth,
+        camera: this.camera, // Add this
       });
 
       return media;
@@ -119,7 +155,7 @@ export default class App {
     this.scroll.target = this.scroll.position + distance;
   }
 
-  onTouchUp(event) {
+  onTouchUp() {
     this.isDown = false;
   }
 
@@ -176,6 +212,23 @@ export default class App {
    * Update.
    */
   update() {
+    if (!this.initialSpeedBoosted) {
+      this.initialSpeedBoosted = true;
+      const originalSpeed = 2;
+      setTimeout(() => {
+        let speedIt = startSpeed; // Start with a high speed
+        const interval = setInterval(() => {
+          speedIt = lerp(speedIt, originalSpeed, 0.1);
+          this.speed = speedIt;
+
+          if (Math.abs(speedIt - originalSpeed) < 0.01) {
+            this.speed = speedIt;
+            clearInterval(interval);
+          }
+        }, 80);
+      }, 10);
+    }
+
     this.scroll.target += this.speed;
 
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
@@ -220,5 +273,7 @@ export default class App {
     window.addEventListener("touchstart", this.onTouchDown.bind(this));
     window.addEventListener("touchmove", this.onTouchMove.bind(this));
     window.addEventListener("touchend", this.onTouchUp.bind(this));
+
+    window.addEventListener("click", this.onClick.bind(this));
   }
 }

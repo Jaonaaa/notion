@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/demos/demo-2.scss";
+import { ArrowRight, ArrowRightFromLine } from "lucide-react";
 
 const GalleryX = () => {
   return (
@@ -7,17 +8,18 @@ const GalleryX = () => {
       <main>
         <div className="frame">
           <div className="frame__title-wrap">
-            <h1 className="frame__title">IDGGGGG</h1>
-            <p className="frame__tagline">
-              using <a href="https://github.com/oframe/ogl">OGL</a> with shaders
-            </p>
+            <h1 className="frame__title">
+              <a href="/ ">NOTION CORP</a>
+            </h1>
           </div>
 
-          <div className="frame__links">
-            <a href="https://tympanus.net/Tutorials/BreathingDots/">Previous Demo</a>
-            <a href="https://tympanus.net/codrops/?p=52634">Article</a>
-            <a href="https://github.com/lhbizarro/infinite-webl-gallery" target="_blank" rel="noopener noreferrer">
-              GitHub
+          <div className="frame__links flex gap-5">
+            <a href="/sign-in" className="inline-flex gap-5 items-center transition-opacity hover:opacity-50 duration-200">
+              SE CONNECTER
+              <ArrowRightFromLine size={17} />
+            </a>
+            <a href="/archive" className="underline transition-opacity hover:opacity-50 duration-200">
+              DECOUVRIR
             </a>
           </div>
         </div>
@@ -28,7 +30,7 @@ const GalleryX = () => {
           </div> */}
 
           <div className="demo-2__gallery">
-            {[...Array(7)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <figure className="demo-2__gallery__figure" key={i}>
                 <img className="demo-2__gallery__image" src={`images/demo-2/${i + 1}.jpg`} alt={`Gallery item ${i + 1}`} />
               </figure>

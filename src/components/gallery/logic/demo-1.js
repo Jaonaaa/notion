@@ -100,7 +100,7 @@ export default class App {
     this.scroll.target = this.scroll.position + distance;
   }
 
-  onTouchUp(event) {
+  onTouchUp() {
     this.isDown = false;
   }
 
