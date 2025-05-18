@@ -4,6 +4,7 @@ import { CustomEase } from "gsap/dist/CustomEase";
 import items from "./items";
 
 import "./gallery.scss";
+import { FullScreenModal } from "../../full-screen-modal";
 
 let SplitType;
 
@@ -15,6 +16,8 @@ export function Gallery() {
   const expandedItemRef = useRef(null);
 
   const [initialized, setInitialized] = useState(false);
+
+  const [isFullScreenModal, setIsFullScreenModal] = useState(false);
 
   useEffect(() => {
     const importSplitType = async () => {
@@ -168,7 +171,8 @@ export function Gallery() {
 
         item.addEventListener("click", (e) => {
           if (state.mouseHasMoved || state.isDragging) return;
-          handleItemClick(item);
+          // handleItemClick(item);
+          setIsFullScreenModal(true);
         });
 
         canvas.appendChild(item);
@@ -365,10 +369,10 @@ export function Gallery() {
     state.startY = e.clientY;
     containerRef.current.style.cursor = "grabbing";
 
-    gsap.to(".gallery-canvas-container", {
-      scale: 0.9,
-      duration: 0.3,
-    });
+    // gsap.to(".gallery-canvas-container", {
+    //   scale: 0.9,
+    //   duration: 0.3,
+    // });
   };
 
   const handleMouseMove = (e) => {
@@ -507,6 +511,8 @@ export function Gallery() {
       <div className="project-title" ref={projectTitleRef}>
         <p></p>
       </div>
+
+      {isFullScreenModal && <FullScreenModal onHide={() => setIsFullScreenModal(false)} />}
     </>
   );
 }

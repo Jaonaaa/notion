@@ -4,23 +4,15 @@ export const menuItems = [
     to: "/",
   },
   {
-    label: "Défense",
-    to: "/defense",
+    label: "Archives",
+    to: "/archive",
   },
   {
     label: "Histoires",
-    to: "/story",
+    to: "/stories",
   },
   {
-    label: "Impulsion",
-    to: "/impulsion",
-  },
-  {
-    label: "Team",
-    to: "/team",
-  },
-  {
-    label: "Commitments",
-    to: "/commitements",
+    label: "Se connecter",
+    to: "/sign-in",
   },
 ];

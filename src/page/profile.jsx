@@ -1,5 +1,5 @@
 import "./profile.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // import Footer from "@/components/Footer/Footer";
 
@@ -9,12 +9,14 @@ import products from "./profile-data";
 import ReactLenis from "lenis/react";
 import { useScrambleText } from "../hooks/use-scramble-text";
 import { FullScreenModal } from "../components/full-screen-modal";
+import { AddStoryChoseModal } from "../components/add-story-chose-modal";
 
 export function Profile() {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
 
   const [isModal, setIsModal] = useState(false);
+  const [isChosing, setIsChosing] = useState(false);
 
   useScrambleText({ target: titleRef });
 
@@ -80,13 +82,29 @@ export function Profile() {
     { scope: containerRef }
   );
 
+  useEffect(() => {
+    gsap.to("button", {
+      opacity: 1,
+      duration: 0.4,
+      delay: 0.7,
+    });
+  }, []);
+
   return (
     <ReactLenis root>
-      <div className="catalogue-page" ref={containerRef}>
+      <div id="profile-container" className="catalogue-page" ref={containerRef}>
         <div className="mb-48"></div>
-        <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-48">
+        <h1 ref={titleRef} className="w-full text-center text-8xl tracking-tight mb-12">
           John Doe
         </h1>
+        <div className="w-full flex justify-center mb-24">
+          <button
+            className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l opacity-0"
+            onClick={() => setIsChosing(true)}
+          >
+            Raconter mon histoire
+          </button>
+        </div>
         <div className="products">
           {productLayout.map((row, rowIndex) => (
             <div className="row" key={`row-${rowIndex}`}>
@@ -124,6 +142,7 @@ export function Profile() {
         <div className="pb-10"></div>
       </div>
       {isModal && <FullScreenModal />}
+      {isChosing && <AddStoryChoseModal onHide={() => setIsChosing(false)} />}
     </ReactLenis>
   );
 }
