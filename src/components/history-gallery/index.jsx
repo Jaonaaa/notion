@@ -1,30 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { MeshReflectorMaterial, Environment } from "@react-three/drei";
 import Frames from "./components/Frames";
 import { getStoryById } from "../../queries/stories";
 import { base_url } from "../../queries";
+import { defaultImages } from "./data";
+import { Pause, Play } from "lucide-react";
 
-const pexel = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
-export const imagesDefaultGallery = [
-  // Front
-  { position: [0, 0, 1.5], rotation: [0, 0, 0], url: pexel(1103970) },
-  // Back
-  { position: [-0.8, 0, -0.6], rotation: [0, 0, 0], url: pexel(416430) },
-  { position: [0.8, 0, -0.6], rotation: [0, 0, 0], url: pexel(310452) },
-  // Left
-  { position: [-1.75, 0, 0.25], rotation: [0, Math.PI / 2.5, 0], url: pexel(327482) },
-  { position: [-2.15, 0, 1.5], rotation: [0, Math.PI / 2.5, 0], url: pexel(325185) },
-  { position: [-2, 0, 2.75], rotation: [0, Math.PI / 2.5, 0], url: pexel(358574) },
-  // Right
-  { position: [1.75, 0, 0.25], rotation: [0, -Math.PI / 2.5, 0], url: pexel(227675) },
-  { position: [2.15, 0, 1.5], rotation: [0, -Math.PI / 2.5, 0], url: pexel(911738) },
-  { position: [2, 0, 2.75], rotation: [0, -Math.PI / 2.5, 0], url: pexel(1738986) },
-];
+export const GalleryCanvas = () => {
+  const memoryId = new URLSearchParams(window.location.search).get("memoryId");
 
-export const GalleryCanvas = ({ images }) => {
   const [loaded, setLoaded] = useState(false);
   const [stories, setStories] = useState([]);
+  const [song, setSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
   const loadImages = async (images) => {
     const promises = images.map(({ url }) => {
@@ -43,27 +33,50 @@ export const GalleryCanvas = ({ images }) => {
   };
 
   const getData = useCallback(async () => {
-    const res = await getStoryById(1);
+    const res = await getStoryById(memoryId);
     const storiesFetched = res.StoryElements.map((item, i) => ({
-      ...item,
-      position: imagesDefaultGallery[i].position,
-      rotation: imagesDefaultGallery[i].rotation,
+      url: base_url + item.media,
+      position: defaultImages[i].position,
+      rotation: defaultImages[i].rotation,
+      description: item.description,
     }));
+    if (res.audio) setSong(base_url + res.audio);
 
     setStories(storiesFetched);
 
     const medias = res.StoryElements.map((item) => ({
       url: base_url + item.media,
     }));
-    console.log("====================================");
-    console.log(medias);
-    console.log("====================================");
     await loadImages(medias);
-  }, []);
+  }, [memoryId]);
+
+  // Audio controls
+  const handlePlayPause = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+  };
 
   useEffect(() => {
     getData();
   }, [getData]);
+
+  // Sync play state
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    return () => {
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+    };
+  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
@@ -85,7 +98,7 @@ export const GalleryCanvas = ({ images }) => {
         <color attach="background" args={["#191920"]} />
         <fog attach="fog" args={["#191920", 0, 15]} />
         <group position={[0, -0.5, 0]}>
-          <Frames images={stories} />
+          <Frames images={stories} memoryId={memoryId} />
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[50, 50]} />
             <MeshReflectorMaterial
@@ -104,6 +117,46 @@ export const GalleryCanvas = ({ images }) => {
         </group>
         <Environment preset="city" />
       </Canvas>
+      {song && (
+        <div style={{ position: "fixed", bottom: 20, left: 20, zIndex: 20, display: "flex", alignItems: "center", gap: 12 }}>
+          <button
+            onClick={handlePlayPause}
+            style={{
+              background: "#fff",
+              border: "none",
+              borderRadius: "1rem",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              width: 44,
+              height: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              padding: 0,
+            }}
+            aria-label={isPlaying ? "Pause" : "Lecture"}
+          >
+            {isPlaying ? <Pause size={20} color="#222" /> : <Play size={20} color="#222" />}
+          </button>
+          <span style={{ color: "#fff", fontSize: 16, fontWeight: 500 }}>{"  "}</span>
+          <audio
+            ref={audioRef}
+            onLoad={() => {
+              audioRef.current.play();
+            }}
+            onPlay={() => {
+              setIsPlaying(true);
+            }}
+            onPause={() => {
+              setIsPlaying(false);
+            }}
+            autoPlay
+            src={song}
+            style={{ display: "none" }}
+            loop
+          />
+        </div>
+      )}
     </div>
   );
 };
