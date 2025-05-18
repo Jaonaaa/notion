@@ -11,6 +11,7 @@ import LoginPage from "./components/sign-in";
 import { Archive } from "./page/archive";
 import { Navigation } from "./components/navigation/navigation";
 import { Gallery, GalleryPage } from "./components/photo/gallery/gallery";
+import { AddComment } from "./page/add-coomment";
 
 // const Gallery = lazy(() => import("./components/gallery"));
 const GalleryCanvas = lazy(() => import("./components/history-gallery"));
@@ -36,6 +37,7 @@ export function App() {
           <Route path="/specialist" element={<Specialist />} />
           <Route path="/sign-in" element={<LoginPage />} />
           <Route path="/archive" element={<Archive />} />
+          <Route path="/story/add-comment/:id" element={<AddComment />} />
         </Routes>
       </MenuContextProvider>
     </BrowserRouter>

@@ -94,6 +94,14 @@ export function FullScreenModal({ story, onHide = () => {} }) {
                 Voter
               </button>
               ({formatNumber(votes)})
+              <button
+                onClick={() => {
+                  navigate(`/story/add-comment/${story.id}`);
+                }}
+                className="border-2 border-black px-6 py-2 rounded-4xl text-xl cursor-pointer bg-gradient-to-l text-white bg-black opacity-0"
+              >
+                Commenter
+              </button>
             </div>
             <button
               onClick={() => {
