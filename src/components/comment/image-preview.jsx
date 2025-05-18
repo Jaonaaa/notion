@@ -3,11 +3,10 @@ import { MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { fabric } from "fabric";
 import ColorPicker from "./color-picker";
-import ToolBar from "./color-picker";
+import ToolBar from "./toolbar";
+import { addComment } from "../../queries/comment";
 
-// Remove TypeScript types and interfaces for JS version
-
-const ImagePreview = ({ imageUrl, onAddDrawing }) => {
+const ImagePreview = ({ imageUrl, onAddDrawing, idStory = 1 }) => {
   const [fabricCanvas, setFabricCanvas] = useState(null);
   const [activeColor, setActiveColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(3);
@@ -62,7 +61,7 @@ const ImagePreview = ({ imageUrl, onAddDrawing }) => {
     }
   };
 
-  const handleAddAnnotation = () => {
+  const handleAddAnnotation = async () => {
     if (!fabricCanvas) return;
 
     fabricCanvas.backgroundImage?.set({ selectable: false });
@@ -73,13 +72,15 @@ const ImagePreview = ({ imageUrl, onAddDrawing }) => {
       multiplier: 2,
     });
 
+    await addComment({ idstory: idStory, image_base64: annotatedImage });
+
     // Uncomment to download
     // const link = document.createElement("a");
     // link.href = annotatedImage;
     // link.download = "image-annotée.png";
     // link.click();
 
-    // toast("Nouvelle image enregistrée !");
+    toast("Nouvelle image enregistrée !");
     if (onAddDrawing) onAddDrawing(annotatedImage);
   };
 
@@ -96,13 +97,14 @@ const ImagePreview = ({ imageUrl, onAddDrawing }) => {
         fabricCanvas.freeDrawingBrush.color = activeColor;
         fabricCanvas.freeDrawingBrush.width = brushSize;
         break;
-      case "eraser":
+      case "eraser": {
         fabricCanvas.isDrawingMode = true;
         const eraser = new fabric.PencilBrush(fabricCanvas);
         eraser.color = "#ffffff";
         eraser.width = brushSize;
         fabricCanvas.freeDrawingBrush = eraser;
         break;
+      }
       case "select":
         fabricCanvas.isDrawingMode = false;
         break;
@@ -111,16 +113,7 @@ const ImagePreview = ({ imageUrl, onAddDrawing }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold">Aperçu du Tableau</h3>
-        <button
-          className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition"
-          onClick={() => {}} // Add dialog logic if needed
-        >
-          <MessageSquare className="mr-2 h-4 w-4" />
-          Commenter
-        </button>
-      </div>
+      <div className="flex justify-between items-center mb-4"></div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1">
           <canvas id="drawing-canvas" ref={initCanvas} />
@@ -161,9 +154,9 @@ const ImagePreview = ({ imageUrl, onAddDrawing }) => {
           />
           <button
             onClick={handleAddAnnotation}
-            className="mt-auto px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            className="mt-auto px-4 py-3 bg-blue-600 rounded-full text-white  hover:bg-blue-700 transition"
           >
-            Enregistrer l'annotation
+            Valider
           </button>
         </div>
       </div>
