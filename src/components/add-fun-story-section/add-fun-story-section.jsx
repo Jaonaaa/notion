@@ -102,10 +102,17 @@ export function AddFunStorySection({ index, setIndex, initialValue, setValues, s
   };
 
   const handleNext = () => {
+    if (image == "" || text == "" || text == "Ajouter une description") {
+      return;
+    }
     handleNavigation(index + 1);
   };
 
   const handleSubmit = () => {
+    if (image == "" || text == "" || text == "Ajouter une description") {
+      return;
+    }
+
     setValues((oldValues) => {
       const newValues = [...oldValues];
       newValues[index] = { text, image, disposition: mode, emoji };

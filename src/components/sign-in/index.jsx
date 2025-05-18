@@ -5,8 +5,8 @@ import "./index.sass";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("visiteur@gmail.com");
+  const [password, setPassword] = useState("visiteur123");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");

@@ -14,7 +14,7 @@ export function Archive() {
   const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
-    getAllStories().then(setArchives);
+    getArchive().then(setArchives);
   }, []);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function Archive() {
             <ArchiveRow
               key={index}
               text={archive.titre}
-              author={""}
+              author={archive.User.name}
               date={formatDate(archive.date)}
               image={`${base_url}${archive.image}`}
               onClick={() => {
